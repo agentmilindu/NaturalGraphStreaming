@@ -20,6 +20,7 @@ import java.util.Properties;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.graph.Edge;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -37,8 +38,10 @@ public class TwitterStreamGraph {
     //	Program
     //
     public static void main(String[] args) throws Exception {
+        
+        ParameterTool parameter = ParameterTool.fromArgs(args);
 
-        System.out.println("SocketTextStreamWordCount");
+        System.out.println("TwitterGraphStream");
 
         // set up the execution environment
         final StreamExecutionEnvironment env = StreamExecutionEnvironment
@@ -94,7 +97,13 @@ public class TwitterStreamGraph {
 			}), env);
        
        //g.numberOfEdges().print();
-       g.numberOfVertices().print();
+        if (parameter.getNumberOfParameters()>0) {
+            g.numberOfVertices().writeAsText(parameter.get("out"));
+        }
+        else{
+            g.numberOfVertices().print();
+        }
+       
         
         env.execute("WordCount from SocketTextStream Example");
     }
