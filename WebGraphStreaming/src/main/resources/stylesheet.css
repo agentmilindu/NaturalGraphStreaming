@@ -1,0 +1,7 @@
+    node {
+        fill-color: grey;
+        
+    }
+    node.marked {
+        fill-color: red;
+    }
