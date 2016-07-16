@@ -16,6 +16,7 @@ package lk.ucsc.research.graphstream;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import java.util.Iterator;
 import java.util.Properties;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -31,6 +32,8 @@ import org.json.simple.parser.JSONParser;
 import org.apache.flink.graph.Vertex;
 import org.apache.flink.graph.streaming.GraphStream;
 import org.apache.flink.graph.streaming.SimpleEdgeStream;
+import org.apache.flink.streaming.api.functions.windowing.AllWindowFunction;
+import org.apache.flink.streaming.api.windowing.windows.Window;
 
 public class TwitterStreamGraph {
 
@@ -80,7 +83,7 @@ public class TwitterStreamGraph {
                             out.collect(new Edge<Vertex<Long, String>, String>(new Vertex<Long, String>(userId, userScreenName), new Vertex<Long, String>(tweetId, text), "tweeted")); 
                             
                         } else {
-                            System.out.println(value);
+                            //System.out.println(value);
                         }
 
                     }
@@ -91,18 +94,28 @@ public class TwitterStreamGraph {
 					.map(new MapFunction<Edge<Vertex<Long, String>, String>, Edge<Vertex<Long, String>, String>>() {
 						@Override
 						public Edge map(Edge<Vertex<Long, String>, String> e) {
-							System.out.println(e);
+							//System.out.println(e);
 							return e;
 						}
 			}), env);
        
        //g.numberOfEdges().print();
         if (parameter.getNumberOfParameters()>0) {
-            g.numberOfVertices().writeAsText(parameter.get("out"));
+            g.getDegrees().writeAsText(parameter.get("out"));
         }
         else{
-            g.numberOfVertices().print();
+            g.getDegrees().map(new MapFunction<Tuple2<Vertex<Long, String>, Long>, Long>() {
+
+                @Override
+                public Long map(Tuple2<Vertex<Long, String>, Long> t) throws Exception {
+                    System.out.println(t);
+                    return t.f1;
+                }
+            }).countWindowAll(1000).print();
         }
+        
+        //Vertex<Integer, String>
+        //Tuple2<Vertex<Integer, String>,Integer>>
        
         
         env.execute("WordCount from SocketTextStream Example");
