@@ -61,7 +61,14 @@ class Graph {
         addEdge(a, b, 1);
     }
     
-
+    public int getIncommingEdgesCount(Node a) {
+        int count = 0;
+        for (int i = 0; i < this.size; i++) {
+            count += sketch[i][a.hashCode()%this.size];
+            
+        }
+        return count;
+    }
 
     void print() {
         for (int[] row : this.sketch) {
