@@ -5,7 +5,6 @@ package lk.ucsc.research.bellygraph;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author agentmilindu
@@ -26,14 +25,15 @@ public class Crawler extends WebCrawler {
 
     private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg"
             + "|png|mp3|mp3|zip|gz))$");
-    private static Graph graph;
+    private static CrawlerGraph graph;
 
     public Crawler() {
         System.out.println("Created");
     }
 
-    static void setGraph(Graph graph) {
+    static void setGraph(CrawlerGraph graph) {
         Crawler.graph = graph;
+
     }
 
     @Override
@@ -58,17 +58,18 @@ public class Crawler extends WebCrawler {
             Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
             Node x = new Node(url);
+            graph.addNode(x);
 
             for (WebURL link : links) {
 
                 Node y = new Node(link.getURL());
-                graph.addEdge( x, y);
-     
+                graph.addNode(y);
+                graph.addEdge(x, y);
                 //System.out.println(x+ "  LINKS " + y);
             }
+            
         }
-        
-        graph.print();
+
     }
 
     public static String md5(String input) {

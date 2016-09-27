@@ -21,9 +21,10 @@ public class Main{
     public static void main(String args[]) throws Exception {
         
         
-        Graph graph = new Graph(30);
+        CrawlerGraph graph = new CrawlerGraph(30);
 
         Crawler.setGraph(graph);
+        new Analyser(graph).start();
         
         String crawlStorageFolder = "/data/crawl";
         int numberOfCrawlers = 1;
