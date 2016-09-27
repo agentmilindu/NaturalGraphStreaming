@@ -99,24 +99,6 @@ public class TwitterStreamGraph {
 						}
 			}), env);
        
-       //g.numberOfEdges().print();
-        if (parameter.getNumberOfParameters()>0) {
-            g.getDegrees().writeAsText(parameter.get("out"));
-        }
-        else{
-            g.getDegrees().map(new MapFunction<Tuple2<Vertex<Long, String>, Long>, Long>() {
-
-                @Override
-                public Long map(Tuple2<Vertex<Long, String>, Long> t) throws Exception {
-                    System.out.println(t);
-                    return t.f1;
-                }
-            }).countWindowAll(1000).print();
-        }
-        
-        //Vertex<Integer, String>
-        //Tuple2<Vertex<Integer, String>,Integer>>
-       
         
         env.execute("WordCount from SocketTextStream Example");
     }
