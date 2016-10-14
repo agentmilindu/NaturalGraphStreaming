@@ -43,7 +43,6 @@ class Analyser extends Thread {
                 for (Map.Entry<Integer, Integer> entrySetS : degreeDistributionsSketch.entrySet()) {
                     Integer keyS = entrySetS.getKey();
                     Integer valueS = entrySetS.getValue();
-                    dataset.setValue(valueS, "sketch", keyS);
 
                     Map<Integer, Integer> degreeDistributionsGraph = graph.getDegreeDistributionsFromGraph();
                     System.out.println(degreeDistributionsGraph);

@@ -53,6 +53,21 @@ class TCMSketch implements Graph{
         addEdge(a, b, 1);
     }
     
+    public void addUndirectedEdge(Node a, Node b, int w) {
+        int aHash = a.hashCode() % this.size;
+        int bHash = b.hashCode() % this.size;
+        sketch[aHash][bHash] = sketch[aHash][bHash] + w;
+        sketch[bHash][aHash] = sketch[bHash][aHash] + w;
+
+        org.graphstream.graph.Node x2 = graph2.addNode(aHash + "");
+        org.graphstream.graph.Node y2 = graph2.addNode(bHash + "");
+        graph2.addEdge(aHash + "" + bHash, x2, y2).setAttribute("ui.label", sketch[aHash][bHash]);
+    }
+    
+    public void addUndirectedEdge(Node a, Node b) {
+        addUndirectedEdge(a, b, 1);
+    }
+    
     public int getIncommingEdgesCount(Node a) {
         int count = 0;
         for (int i = 0; i < this.size; i++) {

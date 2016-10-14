@@ -51,7 +51,7 @@ class SimpleGraph implements Graph{
     }
     
     public int getOutgoingEdgesCount(Node a) {
-        return graph1.getNode(a.toString()).getDegree();
+        return graph1.getNode(a.toString()).getInDegree();
     }
 
     public void print() {

@@ -41,7 +41,7 @@ class CrawlerGraph implements Graph{
     public void addEdge(Node a, Node b, int w) {
         //System.out.println("Adding edge");
         
-        this.tcmGraph.addEdge(a, b, w);
+        this.tcmGraph.addUndirectedEdge(a, b, w);
         this.originalGraph.addEdge(a, b, w);
 
     }

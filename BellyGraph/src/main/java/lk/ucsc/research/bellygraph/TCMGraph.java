@@ -35,6 +35,16 @@ class TCMGraph implements Graph{
             sketch.addEdge(a, b, w);
         }
     }
+    
+    public void addUndirectedEdge(Node a, Node b, int w){
+        for (TCMSketch sketch : sketches) {
+            sketch.addUndirectedEdge(a, b, w);
+        }
+    }
+    
+    public void addUndirectedEdge(Node a, Node b){
+        addUndirectedEdge(a, b, 1);
+    }
 
     public void addEdge(Node a, Node b) {
         addEdge(a, b, 1);
