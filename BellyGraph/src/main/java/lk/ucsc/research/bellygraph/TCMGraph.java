@@ -6,6 +6,8 @@
 package lk.ucsc.research.bellygraph;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import org.graphstream.graph.implementations.SingleGraph;
 
 /**
@@ -14,37 +16,24 @@ import org.graphstream.graph.implementations.SingleGraph;
  */
 class TCMGraph implements Graph{
 
-    private int[][] sketch;
-    int size;
+    private TCMSketch[] sketches;
+    int[] sizes;
     
     private static org.graphstream.graph.Graph graph2;
 
-    public TCMGraph(int size) {
-        this.size = size;
-        this.sketch = new int[size][size];
-
-        graph2 = new SingleGraph("WebGraphSketch");
-        graph2.setAttribute("ui.title", "GraphSketch");
-        graph2.setStrict(false);
-        graph2.setAutoCreate(true);
-
-        String styles = "node { fill-color: red; }";
-        graph2.addAttribute("ui.stylesheet", styles);
-
-        graph2.display();
-
+    public TCMGraph(int... sizes) {
+        this.sizes = sizes;
+        this.sketches = new TCMSketch[sizes.length];
+        for (int i = 0; i < sizes.length; i++) {
+            int size = sizes[i];
+            this.sketches[i] = new TCMSketch(size);
+        }
     }
 
     public void addEdge(Node a, Node b, int w) {
-        System.out.println("Adding edge");
-        int aHash = a.hashCode() % this.size;
-        int bHash = b.hashCode() % this.size;
-        sketch[aHash][bHash] = sketch[aHash][bHash] + w;
-
-        org.graphstream.graph.Node x2 = graph2.addNode(aHash + "");
-        org.graphstream.graph.Node y2 = graph2.addNode(bHash + "");
-        graph2.addEdge(aHash + "" + bHash, x2, y2).setAttribute("ui.label", sketch[aHash][bHash]);
-
+        for (TCMSketch sketch : sketches) {
+            sketch.addEdge(a, b, w);
+        }
     }
 
     public void addEdge(Node a, Node b) {
@@ -52,26 +41,32 @@ class TCMGraph implements Graph{
     }
     
     public int getIncommingEdgesCount(Node a) {
-        int count = 0;
-        for (int i = 0; i < this.size; i++) {
-            count += sketch[i][a.hashCode()%this.size];
-            
+        int count = Integer.MAX_VALUE;
+        for (TCMSketch sketch : sketches) {
+            int c = sketch.getIncommingEdgesCount(a);
+            if(c < count){
+                count = c;
+            }
         }
         return count;
     }
     
     public int getOutgoingEdgesCount(Node a) {
-        int count = 0;
-        for (int i = 0; i < this.size; i++) {
-            count += sketch[a.hashCode()%this.size][i];
-            
+        int count = Integer.MAX_VALUE;
+        List counts = new LinkedList();
+        for (TCMSketch sketch : sketches) {
+            int c = sketch.getOutgoingEdgesCount(a);
+            counts.add(c);
+            if(c < count){
+                count = c;
+            }
         }
         return count;
     }
 
     public void print() {
-        for (int[] row : this.sketch) {
-            System.out.println(Arrays.toString(row));
+        for (TCMSketch sketch : sketches) {
+            sketch.print();
         }
     }
 

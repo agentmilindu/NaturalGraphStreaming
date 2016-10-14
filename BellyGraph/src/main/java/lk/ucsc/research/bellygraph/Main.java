@@ -21,7 +21,7 @@ public class Main{
     public static void main(String args[]) throws Exception {
         
         
-        CrawlerGraph graph = new CrawlerGraph(30);
+        CrawlerGraph graph = new CrawlerGraph(11,19, 71);
 
         Crawler.setGraph(graph);
         new Analyser(graph).start();

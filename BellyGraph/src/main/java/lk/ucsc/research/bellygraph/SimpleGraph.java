@@ -49,6 +49,10 @@ class SimpleGraph implements Graph{
     public int getIncommingEdgesCount(Node a) {
         return 1;
     }
+    
+    public int getOutgoingEdgesCount(Node a) {
+        return graph1.getNode(a.toString()).getDegree();
+    }
 
     public void print() {
         Collection<org.graphstream.graph.Node> nodeSet = graph1.getNodeSet();

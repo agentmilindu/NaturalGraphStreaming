@@ -69,6 +69,8 @@ public class Crawler extends WebCrawler {
             }
             
         }
+        
+        graph.print();
 
     }
 

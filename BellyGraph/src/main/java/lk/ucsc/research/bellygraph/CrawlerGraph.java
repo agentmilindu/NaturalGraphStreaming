@@ -5,16 +5,11 @@
  */
 package lk.ucsc.research.bellygraph;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import org.graphstream.graph.implementations.SingleGraph;
 
 /**
  *
@@ -22,27 +17,31 @@ import org.graphstream.graph.implementations.SingleGraph;
  */
 class CrawlerGraph implements Graph{
 
-    private TCMGraph tcmSketch;
-    private Graph originalGraph;
+    private TCMGraph tcmGraph;
+    private SimpleGraph originalGraph;
     private Set<Node> nodes = new HashSet<Node>();
 
 
-    public CrawlerGraph(int size) {
-        this.tcmSketch = new TCMGraph(size);
-        this.originalGraph = new SimpleGraph(size);
+    public CrawlerGraph(int... size) {
+        this.tcmGraph = new TCMGraph(size);
+        this.originalGraph = new SimpleGraph(size[0]);
 
     }
     
+    public CrawlerGraph(int size) {
+        this(size, 2*size, size*size);
+    }
+    
     public void addNode(Node a) {
-        System.out.println("Adding node:" + a.toString());
+        //System.out.println("Adding node:" + a.toString());
         this.nodes.add(a);
         this.originalGraph.addNode(a);
     }
 
     public void addEdge(Node a, Node b, int w) {
-        System.out.println("Adding edge");
+        //System.out.println("Adding edge");
         
-        this.tcmSketch.addEdge(a, b, w);
+        this.tcmGraph.addEdge(a, b, w);
         this.originalGraph.addEdge(a, b, w);
 
     }
@@ -57,35 +56,67 @@ class CrawlerGraph implements Graph{
 
     public void print() {
         this.originalGraph.print();
-        this.tcmSketch.print();
+        this.tcmGraph.print();
     }
 
     void printDegreeDistributions() {
         Map<Integer,Integer> degrees = new TreeMap<>();
         
-        this.tcmSketch.print();
+        //this.tcmGraph.print();
         
         for (Iterator<Node> iterator = nodes.iterator(); iterator.hasNext();) {
             Node next = iterator.next();
-            int degree = this.tcmSketch.getOutgoingEdgesCount(next);
+            int degree = this.tcmGraph.getOutgoingEdgesCount(next);
             if (degrees.get(degree) == null) {
                 degrees.put(degree, 1);
             }else{
                 degrees.put(degree, degrees.get(degree)+1);
             }
-            System.out.println(degree+""+degrees.get(degree));
         }
         System.out.println(degrees);
-        for (int i = 0; i < degrees.size(); i++) {
-            if (degrees.get(i) == null) {
-                System.out.println(i+" : 0");
-            }else{
-                System.out.println(i+" : "+degrees.get(i));
-            }
-            
-        }
-        System.out.println("degrees size: "+degrees.size());
         
+    }
+    
+    public Map<Integer, Integer> getDegreeDistributionsFromSketches() {
+        Map<Integer,Integer> degrees = new TreeMap<>();
+        
+        //this.tcmGraph.print();
+        
+        for (Iterator<Node> iterator = nodes.iterator(); iterator.hasNext();) {
+            Node next = iterator.next();
+            int degree = this.tcmGraph.getOutgoingEdgesCount(next);
+            if (degrees.get(degree) == null) {
+                degrees.put(degree, 1);
+            }else{
+                degrees.put(degree, degrees.get(degree)+1);
+            }
+        }
+        return degrees;
+        
+    }
+    
+    public Map<Integer, Integer> getDegreeDistributionsFromGraph() {
+        Map<Integer,Integer> degrees = new TreeMap<>();
+        
+        //this.tcmGraph.print();
+        
+        for (Iterator<Node> iterator = nodes.iterator(); iterator.hasNext();) {
+            Node next = iterator.next();
+            int degree = this.originalGraph.getOutgoingEdgesCount(next);
+            if (degrees.get(degree) == null) {
+                degrees.put(degree, 1);
+            }else{
+                degrees.put(degree, degrees.get(degree)+1);
+            }
+        }
+        return degrees;
+        
+    }
+    
+    
+
+    private CrawlerGraph(int size, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

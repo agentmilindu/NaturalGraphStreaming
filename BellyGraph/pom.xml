@@ -14,15 +14,21 @@
     </properties>
     <dependencies>
         <dependency>
-        <groupId>edu.uci.ics</groupId>
-        <artifactId>crawler4j</artifactId>
-        <version>4.2</version>
-    </dependency>
-    <dependency>
+            <groupId>edu.uci.ics</groupId>
+            <artifactId>crawler4j</artifactId>
+            <version>4.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.graphstream</groupId>
             <artifactId>gs-core</artifactId>
             <version>1.1.2</version>
             <optional>false</optional>
-	</dependency>
+        </dependency>
+        <dependency>
+            <groupId>jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.13</version>
+        </dependency>
+
     </dependencies>
 </project>
