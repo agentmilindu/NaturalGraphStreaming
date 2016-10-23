@@ -9,7 +9,7 @@
         <module>gelly-streaming</module>
         <module>SocialGraphStreaming</module>
         <module>WebGraphStreaming</module>
-        <module>BellyGraph</module>
+        <module>Belly</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
