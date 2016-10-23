@@ -42,8 +42,8 @@
                 <configuration>
                     <instructions>
                         <Bundle-Activator>lk.ucsc.research.bellyrunner.Activator</Bundle-Activator>
-                        <Export-Package>lk.ucsc.research.belly.runner</Export-Package>
                     </instructions>
+                    <Embed-Dependency>BellyGraph</Embed-Dependency>
                 </configuration>
             </plugin>
         </plugins>
@@ -129,11 +129,6 @@
                                 </configuration>
                             </execution>
                         </executions>
-                        <configuration>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
@@ -179,6 +174,18 @@
                                 </java>
                             </target>
                         </configuration>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
