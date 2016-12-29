@@ -1,18 +1,20 @@
 from TCMSketch import TCMSketch
 
 class TCMGraph():
+
     def __init__(self, sizes):
         self.sizes = sizes
         self.sketches = []
+
         for s in sizes:
             self.sketches.append(TCMSketch(s))
 
     def addDEdge(self, a, b):
-	counts = []
+        counts = []
         for s in self.sketches:
             v = s.addDEdge(a, b)
-	    counts.append(v)
-	return counts
+            counts.append(v)
+        return counts
 
     def addUDEdge(self, a, b):
         for s in self.sketches:

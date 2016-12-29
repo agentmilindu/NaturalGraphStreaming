@@ -11,9 +11,9 @@ print(sys.argv)
 input = list(map(int, sys.argv[1:]))
 n = input[0]
 e = input[1]
-G2 = GenRndGnm(PNGraph, n , e)
+G2 = GenRndGnm(PNGraph, n, e)
 skeches = input[2:]
-G1 = TCMGraph(skeches)
+G1 = TCMGraphAS(skeches)
 
 name = "n"+str(n)+"-e"+str(e)+"-sketches-"+"-".join(list(map(str,skeches)))
 
