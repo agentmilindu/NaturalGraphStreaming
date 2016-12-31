@@ -20,6 +20,12 @@ class TCMGraph():
         for s in self.sketches:
             s.addDEdge(a, b)
 
+    def getEdge(self, a, b):
+        ev = []
+        for s in self.sketches:
+            ev.append(s.getEdge(a, b))
+        return min(filter(None, ev))
+
     def getIncommingEdgesCount(self, a):
         counts = []
         for s in self.sketches:
