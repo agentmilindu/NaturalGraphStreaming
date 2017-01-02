@@ -39,38 +39,37 @@ b1 = {}
 c1 = {}
 
 
-for NI in G2.Nodes():
-    id =  NI.GetId()
-    inc = G1.getIncommingEdgesCount(Node(NI.GetId()))
-    inc2 = NI.GetInDeg()
+count = 0
+correct0 = 0
+correct = 0
+correct1 = 0
+correct2 = 0
+correct3 = 0
+for NI in G2.Edges():
 
-    x = a1.get(inc - inc2, 0) + 1
-    a1[inc - inc2] = x
+    if count == 10000:
+        break
+    else:
+        count += 1
 
-    if(inc>inc2):
-        aa += (inc - inc2)/inc2
-        a += 1
-    if(inc<inc2):
-        bb += (inc2 - inc)/inc2
-        b += 1
-    if(inc==inc2):
-        c += 1
+    sid = NI.GetSrcNId()
+    did = NI.GetDstNId()
 
-    out = G1.getOutgoingEdgesCount(Node(NI.GetId()))
-    out2 = NI.GetOutDeg()
-
-    degrees[inc] = degrees.get(inc, 0) + 1
-    degrees2[inc2] = degrees2.get(inc2, 0) + 1
-    degrees[inc2] = degrees.get(inc2, 0)
-    degrees2[inc] = degrees2.get(inc, 0)
+    ev = G1.getEdge(Node(sid), Node(did))
+    if ev is None:
+        correct0 += 1
+    elif ev is 1:
+        correct += 1
+    elif ev is 2:
+        correct1 += 1
+    elif ev is 3:
+        correct2 += 1
+    elif ev is 4:
+        correct3 += 1
 
     #print "id %d out: %d(%d) and in: %d(%d) "\  % (id, out, out2, inc, inc2)
 
-print(degrees)
-print(degrees2)
-print(a, b, c)
-print(aa, bb, cc)
-print(a1)
+print(correct0, correct, correct1, correct2, correct3)
 
 #incomming_sorted = sorted(degrees.items(), key=lambda value: value[1])
 

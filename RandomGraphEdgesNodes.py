@@ -15,7 +15,7 @@ n = input[0]
 e = input[1]
 G2 = GenRndGnm(PNGraph, n, e)
 skeches = input[2:]
-G1 = TCMGraph(skeches)
+G1 = TCMGraphAS(skeches)
 
 name = "n"+str(n)+"-e"+str(e)+"-sketches-"+"-".join(list(map(str,skeches)))
 
@@ -38,6 +38,34 @@ a1 = {}
 b1 = {}
 c1 = {}
 
+
+count = 0
+correct0 = 0
+correct = 0
+correct1 = 0
+correct2 = 0
+correct3 = 0
+for NI in G2.Edges():
+
+    if count == 1000:
+        break
+    else:
+        count += 1
+
+    sid = NI.GetSrcNId()
+    did = NI.GetDstNId()
+
+    ev = G1.getEdge(Node(sid), Node(did))
+    if ev is None:
+        correct0 += 1
+    elif ev is 1:
+        correct += 1
+    elif ev is 2:
+        correct1 += 1
+    elif ev is 3:
+        correct2 += 1
+    elif ev is 4:
+        correct3 += 1
 
 for NI in G2.Nodes():
     id =  NI.GetId()
@@ -65,6 +93,8 @@ for NI in G2.Nodes():
     degrees2[inc] = degrees2.get(inc, 0)
 
     #print "id %d out: %d(%d) and in: %d(%d) "\  % (id, out, out2, inc, inc2)
+
+print(correct0, correct, correct1, correct2, correct3)
 
 print(degrees)
 print(degrees2)

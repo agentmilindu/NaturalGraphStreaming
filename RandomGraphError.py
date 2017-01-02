@@ -47,8 +47,11 @@ for NI in G2.Nodes():
     x = a1.get(inc - inc2, 0) + 1
     a1[inc - inc2] = x
 
+    print(inc2, inc)
+
     if(inc>inc2):
         aa += (inc - inc2)/inc2
+        print((inc - inc2)/inc2)
         a += 1
     if(inc<inc2):
         bb += (inc2 - inc)/inc2
@@ -74,16 +77,18 @@ print(a1)
 
 #incomming_sorted = sorted(degrees.items(), key=lambda value: value[1])
 
-plt.xlabel('degrees')
-plt.ylabel('freequency')
-plt.title('Degree freequency')
+plt.xlabel('degree')
+plt.ylabel('number of queries')
+plt.title('Error distribution over degrees')
 
-plt.plot(degrees.keys(), degrees.values())
-plt.plot(degrees2.keys(), degrees2.values(), linestyle='--')
+#plt.plot(degrees.keys(), degrees.values())
+#plt.plot(degrees2.keys(), degrees2.values(), linestyle='--')
 
 #if not os.path.exists("plots/"+name):
 #    os.makedirs("plots/"+name)
 
+a2 = OrderedDict(sorted(a1.items(), key=lambda t: t[0]))
+plt.plot(a2.keys(), a2.values(), color='red')
 plt.savefig("plots/"+name+"plot.png")
 plt.show()
 #G1.show()

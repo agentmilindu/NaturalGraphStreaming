@@ -9,10 +9,10 @@ class TCMGraph():
         for s in sizes:
             self.sketches.append(TCMSketch(s))
 
-    def addDEdge(self, a, b):
+    def addDEdge(self, a, b, w=1):
         counts = []
         for s in self.sketches:
-            v = s.addDEdge(a, b)
+            v = s.addDEdge(a, b, w)
             counts.append(v)
         return counts
 
@@ -24,7 +24,10 @@ class TCMGraph():
         ev = []
         for s in self.sketches:
             ev.append(s.getEdge(a, b))
-        return min(filter(None, ev))
+        try:
+            return min(filter(None, ev))
+        except:
+            return None
 
     def getIncommingEdgesCount(self, a):
         counts = []
@@ -32,7 +35,7 @@ class TCMGraph():
             counts.append(s.getIncommingEdgesCount(a))
 
         #print(counts, min(counts))
-        return min(filter(None, counts))
+        return min(counts)
 
     def getOutgoingEdgesCount(self, a):
         counts = []

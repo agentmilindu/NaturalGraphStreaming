@@ -70,7 +70,9 @@ class TCMGraphAS():
         counts = []
         for s in self.sketches:
             counts.append(s.getIncommingEdgesCount(a))
-        return min(counts)
+
+        m = min(filter(None, counts))
+        return min(filter(None, counts))
 
     def getOutgoingEdgesCount(self, a):
         counts = []

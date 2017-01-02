@@ -3,6 +3,7 @@ class TCMSketch():
         self.id = id
         self.size = size
         self.sketch = [[None] * size for _ in range(size)]
+        self.score = 0
 
     def _addEdge(self, x, y, w=1):
         v = self.sketch[x][y]

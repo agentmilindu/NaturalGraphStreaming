@@ -2,7 +2,8 @@ from __future__ import division
 from collections import OrderedDict
 import os
 import sys
-from snap import *
+import snap
+from snap import GenForestFire, ConvertGraph, PUNGraph
 from TCMGraph import TCMGraph
 from TCMGraphAS import TCMGraphAS
 from Node import Node
@@ -13,11 +14,14 @@ print(sys.argv)
 input = list(map(int, sys.argv[1:]))
 n = input[0]
 e = input[1]
-G2 = GenRndGnm(PNGraph, n, e)
+G2 = GenForestFire(1000, 0.35, 0.35)
+#G2 = ConvertGraph(PUNGraph,G2)
 skeches = input[2:]
-G1 = TCMGraph(skeches)
+G1 = TCMGraphAS(skeches)
 
-name = "n"+str(n)+"-e"+str(e)+"-sketches-"+"-".join(list(map(str,skeches)))
+edC = snap.CntUniqDirEdges(G2)
+
+name = "n"+str(n)+"-e"+str(edC)+"-sketches-"+"-".join(list(map(str,skeches)))
 
 for EI in G2.Edges():
       vs = G1.addDEdge(Node(EI.GetSrcNId()), Node(EI.GetDstNId()))
@@ -38,7 +42,7 @@ a1 = {}
 b1 = {}
 c1 = {}
 
-
+print("Querying ")
 for NI in G2.Nodes():
     id =  NI.GetId()
     inc = G1.getIncommingEdgesCount(Node(NI.GetId()))
@@ -48,10 +52,8 @@ for NI in G2.Nodes():
     a1[inc - inc2] = x
 
     if(inc>inc2):
-        aa += (inc - inc2)/inc2
         a += 1
     if(inc<inc2):
-        bb += (inc2 - inc)/inc2
         b += 1
     if(inc==inc2):
         c += 1
@@ -66,6 +68,7 @@ for NI in G2.Nodes():
 
     #print "id %d out: %d(%d) and in: %d(%d) "\  % (id, out, out2, inc, inc2)
 
+print(edC)
 print(degrees)
 print(degrees2)
 print(a, b, c)

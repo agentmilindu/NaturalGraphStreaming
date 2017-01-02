@@ -2,7 +2,8 @@ from __future__ import division
 from collections import OrderedDict
 import os
 import sys
-from snap import *
+import snap
+from snap import GenForestFire, TRnd
 from TCMGraph import TCMGraph
 from TCMGraphAS import TCMGraphAS
 from Node import Node
@@ -13,11 +14,13 @@ print(sys.argv)
 input = list(map(int, sys.argv[1:]))
 n = input[0]
 e = input[1]
-G2 = GenRndGnm(PNGraph, n, e)
+G2 = GenForestFire(1000, 0.35, 0.35)
 skeches = input[2:]
 G1 = TCMGraph(skeches)
 
-name = "n"+str(n)+"-e"+str(e)+"-sketches-"+"-".join(list(map(str,skeches)))
+edC = snap.CntUniqDirEdges(G2)
+
+name = "n"+str(n)+"-e"+str(edC)+"-sketches-"+"-".join(list(map(str,skeches)))
 
 for EI in G2.Edges():
       vs = G1.addDEdge(Node(EI.GetSrcNId()), Node(EI.GetDstNId()))
@@ -39,38 +42,39 @@ b1 = {}
 c1 = {}
 
 
-for NI in G2.Nodes():
-    id =  NI.GetId()
-    inc = G1.getIncommingEdgesCount(Node(NI.GetId()))
-    inc2 = NI.GetInDeg()
+count = 0
+correct0 = 0
+correct = 0
+correct1 = 0
+correct2 = 0
+correct3 = 0
+for NI in G2.Edges():
 
-    x = a1.get(inc - inc2, 0) + 1
-    a1[inc - inc2] = x
+    if count == 10000:
+        break
+    else:
+        count += 1
 
-    if(inc>inc2):
-        aa += (inc - inc2)/inc2
-        a += 1
-    if(inc<inc2):
-        bb += (inc2 - inc)/inc2
-        b += 1
-    if(inc==inc2):
-        c += 1
+    sid = NI.GetSrcNId()
+    did = NI.GetDstNId()
 
-    out = G1.getOutgoingEdgesCount(Node(NI.GetId()))
-    out2 = NI.GetOutDeg()
-
-    degrees[inc] = degrees.get(inc, 0) + 1
-    degrees2[inc2] = degrees2.get(inc2, 0) + 1
-    degrees[inc2] = degrees.get(inc2, 0)
-    degrees2[inc] = degrees2.get(inc, 0)
+    ev = G1.getEdge(Node(sid), Node(did))
+    if ev is None:
+        correct0 += 1
+    elif ev is 1:
+        correct += 1
+    elif ev is 2:
+        correct1 += 1
+    elif ev is 3:
+        correct2 += 1
+    elif ev is 4:
+        correct3 += 1
 
     #print "id %d out: %d(%d) and in: %d(%d) "\  % (id, out, out2, inc, inc2)
 
-print(degrees)
-print(degrees2)
-print(a, b, c)
-print(aa, bb, cc)
-print(a1)
+edC = snap.CntUniqDirEdges(G2)
+print(edC)
+print(correct0, correct, correct1, correct2, correct3)
 
 #incomming_sorted = sorted(degrees.items(), key=lambda value: value[1])
 

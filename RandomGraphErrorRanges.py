@@ -47,8 +47,15 @@ for NI in G2.Nodes():
     x = a1.get(inc - inc2, 0) + 1
     a1[inc - inc2] = x
 
+    if abs(inc - inc2) <= 3:
+        c1 = b1.get(inc2, {})
+        c1[inc - inc2] = c1.get(inc - inc2, 0) + 1
+        print("c1:", c1)
+        b1[inc2] = c1
+
     if(inc>inc2):
         aa += (inc - inc2)/inc2
+        print((inc - inc2)/inc2)
         a += 1
     if(inc<inc2):
         bb += (inc2 - inc)/inc2
@@ -71,19 +78,48 @@ print(degrees2)
 print(a, b, c)
 print(aa, bb, cc)
 print(a1)
+e = OrderedDict(sorted(b1.items(), key=lambda t: t[0]))
+print(e)
+es0 = {}
+es1 = {}
+es2 = {}
+es3 = {}
+
+for i in e:
+    for j in e[i]:
+        if abs(j) == 0:
+            es0[i] = e[i][j]
+        elif abs(j) == 1:
+            es1[i] = e[i][j]
+        elif abs(j) == 2:
+            es2[i] = e[i][j]
+        elif abs(j) == 3:
+            es3[i] = e[i][j]
+
+print("---------------")
+print(es0)
+print(es1)
+print(es2)
+print(es3)
+
+
 
 #incomming_sorted = sorted(degrees.items(), key=lambda value: value[1])
 
 plt.xlabel('degrees')
-plt.ylabel('freequency')
-plt.title('Degree freequency')
+plt.ylabel('number of queries')
+plt.title('Number of effective queries')
 
-plt.plot(degrees.keys(), degrees.values())
-plt.plot(degrees2.keys(), degrees2.values(), linestyle='--')
+#plt.plot(degrees.keys(), degrees.values())
+#plt.plot(degrees2.keys(), degrees2.values(), linestyle='--')
 
 #if not os.path.exists("plots/"+name):
 #    os.makedirs("plots/"+name)
 
+a2 = OrderedDict(sorted(a1.items(), key=lambda t: t[0]))
+plt.plot(es1.keys(), es1.values(), color='green')
+plt.plot(es2.keys(), es2.values(), color='orange')
+plt.plot(es3.keys(), es3.values(), color='purple')
 plt.savefig("plots/"+name+"plot.png")
 plt.show()
 #G1.show()

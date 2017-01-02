@@ -1,6 +1,7 @@
 import os
 import sys
-from snap import *
+import snap
+from snap import GenPrefAttach, TRnd
 from TCMGraph import TCMGraph
 from Node import Node
 import matplotlib.pyplot as plt
@@ -10,7 +11,7 @@ print(sys.argv)
 input = list(map(int, sys.argv[1:]))
 n = input[0]
 e = input[1]
-G2 = GenRndPowerLaw( n , e, False)
+G2 = GenPrefAttach(n, e, snap.TRnd())
 skeches = input[2:]
 G1 = TCMGraph(skeches)
 
