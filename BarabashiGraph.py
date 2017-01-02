@@ -14,10 +14,10 @@ print(sys.argv)
 input = list(map(int, sys.argv[1:]))
 n = input[0]
 e = input[1]
-G2 = GenForestFire(1000, 0.35, 0.35)
+G2 = GenForestFire(100000, 0.35, 0.35)
 #G2 = ConvertGraph(PUNGraph,G2)
 skeches = input[2:]
-G1 = TCMGraphAS(skeches)
+G1 = TCMGraph(skeches)
 
 edC = snap.CntUniqDirEdges(G2)
 
